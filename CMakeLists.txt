@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.16)
 project(broc_n_roll_game C CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Setting parameters for raylib
@@ -11,7 +11,20 @@ set(BUILD_GAMES    OFF CACHE BOOL "" FORCE) # or games
 add_subdirectory(libs/raylib)
 add_subdirectory(libs/flecs)
 
-add_executable(${PROJECT_NAME} src/main.cpp)
+set(headers
+  src/include/entity/entity.h
+  src/include/pipeline/pipeline.h
+)
+set(sources
+  src/include/entity/entity.cpp
+)
+set(exe_sources
+  src/main.cpp
+  ${sources}
+)
+
+add_executable(${PROJECT_NAME} ${exe_sources})
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/include)
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib flecs::flecs_static)
 target_compile_definitions(${PROJECT_NAME} PUBLIC ASSETS_PATH="${CMAKE_CURRENT_SOURCE_DIR}/assets/") # Set the asset path macro to the absolute path on the dev machine
 #target_compile_definitions(${PROJECT_NAME} PUBLIC ASSETS_PATH="relative-path-to-assets-in-the-game-package") # Set the asset path macro in release mode
