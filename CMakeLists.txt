@@ -11,11 +11,6 @@ set(BUILD_GAMES    OFF CACHE BOOL "" FORCE) # or games
 add_subdirectory(libs/raylib)
 add_subdirectory(libs/flecs)
 
-set(headers
-  src/include/entity/entity.h
-  src/include/player/player.h
-  src/include/pipeline/pipeline.h
-)
 set(sources
   src/include/entity/entity.cpp
   src/include/player/player.cpp
