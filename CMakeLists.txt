@@ -13,10 +13,12 @@ add_subdirectory(libs/flecs)
 
 set(headers
   src/include/entity/entity.h
+  src/include/player/player.h
   src/include/pipeline/pipeline.h
 )
 set(sources
   src/include/entity/entity.cpp
+  src/include/player/player.cpp
 )
 set(exe_sources
   src/main.cpp

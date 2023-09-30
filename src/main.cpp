@@ -1,6 +1,7 @@
 #include "entity/entity.h"
 #include "flecs.h"
 #include "pipeline/pipeline.h"
+#include "player/player.h"
 #include "raylib.h"
 
 constexpr auto SCREEN_WIDTH = 800;
@@ -14,12 +15,8 @@ int main() {
   flecs::pipeline draw_pipeline
       = world.pipeline().with(flecs::System).with<broc::pipeline::Draw>().build();
 
-  auto e = world.entity().set([](broc::entity::Movable& m, broc::entity::Drawable& d) {
-    m = {{SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2, 0}, {1, 0, 0}, 1};
-    d = {50, RED};
-  });
-
   broc::entity::setup(world);
+  broc::player::setup(world);
 
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Window title");
   SetTargetFPS(60);
