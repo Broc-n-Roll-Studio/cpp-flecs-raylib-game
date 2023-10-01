@@ -1,3 +1,4 @@
+#include "camera/camera.h"
 #include "entity/entity.h"
 #include "flecs.h"
 #include "input/input.h"
@@ -22,20 +23,25 @@ int main() {
   broc::input::setup_systems(world);
   broc::entity::setup_systems(world);
   broc::player::setup_systems(world);
+  broc::camera::setup_systems(world);
 
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Window title");
   SetTargetFPS(60);
+
+  auto main_cam = world.get<Camera2D>();
 
   while (!WindowShouldClose()) {
     world.set_pipeline(logic_pipeline);
     world.progress(GetFrameTime());
 
     BeginDrawing();
+    BeginMode2D(*main_cam);
     ClearBackground(RAYWHITE);
 
     world.set_pipeline(draw_pipeline);
     world.progress(GetFrameTime());
 
+    EndMode2D();
     EndDrawing();
   }
 

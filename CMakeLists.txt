@@ -15,6 +15,7 @@ set(sources
   src/include/entity/entity.cpp
   src/include/player/player.cpp
   src/include/input/input.cpp
+  src/include/camera/camera.cpp
 )
 set(exe_sources
   src/main.cpp
