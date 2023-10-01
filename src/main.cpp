@@ -1,35 +1,14 @@
-#include "camera/camera.h"
-#include "entity/entity.h"
 #include "flecs.h"
-#include "input/input.h"
-#include "pipeline/render_pipeline.h"
-#include "player/player.h"
+#include "game.h"
 #include "raylib.h"
-
-constexpr auto SCREEN_WIDTH = 800;
-constexpr auto SCREEN_HEIGHT = 450;
 
 int main() {
   flecs::world world;
 
-  broc::entity::setup_components(world);
-  broc::player::setup_components(world);
-  broc::camera::setup_components(world);
-  broc::camera::setup_globals(world);
-
-  broc::pipeline::RenderPipeline render_pipeline;
-  render_pipeline.setup(world);
-  world.set<broc::pipeline::RenderPipeline>(render_pipeline);
-
-  broc::input::setup_systems(world);
-  broc::entity::setup_systems(world);
-  broc::player::setup_systems(world);
-  broc::camera::setup_systems(world);
-
-  InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Window title");
-  SetTargetFPS(60);
-
-  auto main_cam = world.get<Camera2D>();
+  broc::config::initialize_components(world);
+  broc::config::initialize_globals(world);
+  broc::config::initialize_systems(world);
+  broc::config::initialize_window();
 
   while (!WindowShouldClose()) {
     world.progress(GetFrameTime());
