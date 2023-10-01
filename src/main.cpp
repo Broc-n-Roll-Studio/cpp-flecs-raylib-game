@@ -2,7 +2,6 @@
 #include "entity/entity.h"
 #include "flecs.h"
 #include "input/input.h"
-#include "pipeline/pipeline.h"
 #include "pipeline/render_pipeline.h"
 #include "player/player.h"
 #include "raylib.h"
