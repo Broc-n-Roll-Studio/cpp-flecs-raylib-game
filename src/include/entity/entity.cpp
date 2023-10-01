@@ -1,13 +1,15 @@
 #include "entity.h"
 #include "pipeline/render_pipeline.h"
-#include "raylib.h"
+#include "types.h"
 
-void broc::entity::setup_components(flecs::world& world) {
+using namespace broc::types;
+
+void broc::entity::Handler::setup_components(flecs::world& world) {
   world.component<Movable>();
   world.component<Drawable>();
 }
-
-void broc::entity::setup_systems(flecs::world& world) {
+void broc::entity::Handler::setup_globals(flecs::world& world) {}
+void broc::entity::Handler::setup_systems(flecs::world& world) {
   auto render_pipeline = world.get<broc::pipeline::RenderPipeline>();
 
   world.system<Movable>().each([](Movable& m) {

@@ -18,6 +18,7 @@ set(sources
   src/include/camera/camera.cpp
   src/include/pipeline/render_pipeline.cpp
   src/include/game.cpp
+  src/include/handler.cpp
 )
 set(exe_sources
   src/main.cpp

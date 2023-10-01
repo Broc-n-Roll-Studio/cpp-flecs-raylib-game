@@ -1,22 +1,15 @@
 #pragma once
 
 #include "flecs.h"
-#include "raylib.h"
+#include "handler.h"
 
 namespace broc {
   namespace entity {
-    struct Movable {
-      Vector2 position;
-      Vector2 velocity;
-      float speed_force;
+    class Handler : public ContextHandler<Handler> {
+    public:
+      static void setup_components(flecs::world& world);
+      static void setup_globals(flecs::world& world);
+      static void setup_systems(flecs::world& world);
     };
-
-    struct Drawable {
-      float size;
-      Color color;
-    };
-
-    void setup_components(flecs::world& world);
-    void setup_systems(flecs::world& world);
   }  // namespace entity
 }  // namespace broc
