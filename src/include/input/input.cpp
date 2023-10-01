@@ -1,9 +1,6 @@
-#include <iostream>
-
 #include "entity/entity.h"
 #include "flecs.h"
 #include "input.h"
-#include "pipeline/pipeline.h"
 #include "player/player.h"
 #include "raylib.h"
 #include "raymath.h"
@@ -23,8 +20,7 @@ Vector2 broc::input::handler::retrieve_movement_vector() {
 }
 
 void broc::input::setup_systems(flecs::world& world) {
-  world.system<Movable, const Player>().kind<broc::pipeline::Logic>().each(
-      [](Movable& m, const Player& p) {
-        m.velocity = Vector2Normalize(broc::input::handler::retrieve_movement_vector());
-      });
+  world.system<Movable, const Player>().each([](Movable& m, const Player& p) {
+    m.velocity = Vector2Normalize(broc::input::handler::retrieve_movement_vector());
+  });
 }

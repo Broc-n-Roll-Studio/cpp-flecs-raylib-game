@@ -3,6 +3,7 @@
 #include "flecs.h"
 #include "input/input.h"
 #include "pipeline/pipeline.h"
+#include "pipeline/render_pipeline.h"
 #include "player/player.h"
 #include "raylib.h"
 
@@ -12,13 +13,14 @@ constexpr auto SCREEN_HEIGHT = 450;
 int main() {
   flecs::world world;
 
-  flecs::pipeline logic_pipeline
-      = world.pipeline().with(flecs::System).with<broc::pipeline::Logic>().build();
-  flecs::pipeline draw_pipeline
-      = world.pipeline().with(flecs::System).with<broc::pipeline::Draw>().build();
-
   broc::entity::setup_components(world);
   broc::player::setup_components(world);
+  broc::camera::setup_components(world);
+  broc::camera::setup_globals(world);
+
+  broc::pipeline::RenderPipeline render_pipeline;
+  render_pipeline.setup(world);
+  world.set<broc::pipeline::RenderPipeline>(render_pipeline);
 
   broc::input::setup_systems(world);
   broc::entity::setup_systems(world);
@@ -31,19 +33,7 @@ int main() {
   auto main_cam = world.get<Camera2D>();
 
   while (!WindowShouldClose()) {
-    world.set_pipeline(logic_pipeline);
     world.progress(GetFrameTime());
-    printf("width %d height %d", GetScreenWidth(), GetScreenHeight());
-
-    BeginDrawing();
-    BeginMode2D(*main_cam);
-    ClearBackground(BLACK);
-
-    world.set_pipeline(draw_pipeline);
-    world.progress(GetFrameTime());
-
-    EndMode2D();
-    EndDrawing();
   }
 
   CloseWindow();
