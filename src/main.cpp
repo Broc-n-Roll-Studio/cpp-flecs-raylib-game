@@ -1,5 +1,6 @@
 #include "entity/entity.h"
 #include "flecs.h"
+#include "input/input.h"
 #include "pipeline/pipeline.h"
 #include "player/player.h"
 #include "raylib.h"
@@ -15,8 +16,12 @@ int main() {
   flecs::pipeline draw_pipeline
       = world.pipeline().with(flecs::System).with<broc::pipeline::Draw>().build();
 
-  broc::entity::setup(world);
-  broc::player::setup(world);
+  broc::entity::setup_components(world);
+  broc::player::setup_components(world);
+
+  broc::input::setup_systems(world);
+  broc::entity::setup_systems(world);
+  broc::player::setup_systems(world);
 
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Window title");
   SetTargetFPS(60);

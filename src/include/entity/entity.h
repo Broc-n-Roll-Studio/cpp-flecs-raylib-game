@@ -6,8 +6,8 @@
 namespace broc {
   namespace entity {
     struct Movable {
-      Vector3 position;
-      Vector3 velocity;
+      Vector2 position;
+      Vector2 velocity;
       float speed_force;
     };
 
@@ -16,6 +16,7 @@ namespace broc {
       Color color;
     };
 
-    void setup(flecs::world& world);
+    void setup_components(flecs::world& world);
+    void setup_systems(flecs::world& world);
   }  // namespace entity
 }  // namespace broc

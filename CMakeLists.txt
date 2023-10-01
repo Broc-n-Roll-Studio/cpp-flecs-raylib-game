@@ -14,6 +14,7 @@ add_subdirectory(libs/flecs)
 set(sources
   src/include/entity/entity.cpp
   src/include/player/player.cpp
+  src/include/input/input.cpp
 )
 set(exe_sources
   src/main.cpp
