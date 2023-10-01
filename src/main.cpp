@@ -33,10 +33,11 @@ int main() {
   while (!WindowShouldClose()) {
     world.set_pipeline(logic_pipeline);
     world.progress(GetFrameTime());
+    printf("width %d height %d", GetScreenWidth(), GetScreenHeight());
 
     BeginDrawing();
     BeginMode2D(*main_cam);
-    ClearBackground(RAYWHITE);
+    ClearBackground(BLACK);
 
     world.set_pipeline(draw_pipeline);
     world.progress(GetFrameTime());
