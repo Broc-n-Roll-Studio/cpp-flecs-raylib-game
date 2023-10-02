@@ -5,8 +5,8 @@
 int main() {
     flecs::world world;
 
-    broc::config::initialize_world(world);
-    broc::config::initialize_window();
+    broc::config::InitializeWorld(world);
+    broc::config::InitializeWindow();
 
     while (!WindowShouldClose()) {
         world.progress(GetFrameTime());

@@ -2,17 +2,17 @@
 #include "raylib.h"
 
 namespace broc::pipeline {
-    void Handler::setup_components(flecs::world& world) {
+    void Handler::SetupComponents(flecs::world& world) {
         world.component<pipeline::RenderPipeline>();
     }
 
-    void Handler::setup_globals(flecs::world& world) {
-        world.set<pipeline::RenderPipeline>(pipeline::RenderPipeline().setup(world));
+    void Handler::SetupGlobals(flecs::world& world) {
+        world.set<pipeline::RenderPipeline>(pipeline::RenderPipeline().Setup(world));
     }
 
-    void Handler::setup_systems(flecs::world& world) {}
+    void Handler::SetupSystems(flecs::world& world) {}
 
-    RenderPipeline RenderPipeline::setup(flecs::world& world) {
+    RenderPipeline RenderPipeline::Setup(flecs::world& world) {
         this->m_OnPreDraw = world.entity().add(flecs::Phase).depends_on(flecs::OnUpdate);
         this->OnDraw = world.entity().add(flecs::Phase).depends_on(this->m_OnPreDraw);
         this->m_OnPostDraw = world.entity().add(flecs::Phase).depends_on(this->OnDraw);

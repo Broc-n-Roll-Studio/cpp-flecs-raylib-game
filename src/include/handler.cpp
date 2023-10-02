@@ -1,15 +1,15 @@
 #include "handler.h"
 
 namespace broc::handler {
-    void Context::process_contexts(flecs::world &world, std::vector<Context> &contexts) {
+    void Context::ProcessContexts(flecs::world &world, std::vector<Context> &contexts) {
         for (auto context : contexts) {
-            context.setup_components(world);
+            context.SetupComponents(world);
         }
         for (auto context : contexts) {
-            context.setup_globals(world);
+            context.SetupGlobals(world);
         }
         for (auto context : contexts) {
-            context.setup_systems(world);
+            context.SetupSystems(world);
         }
     }
 }  // namespace broc::handler

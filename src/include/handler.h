@@ -5,23 +5,23 @@
 
 namespace broc::handler {
     struct Context {
-        std::function<void(flecs::world&)> setup_components;
-        std::function<void(flecs::world&)> setup_globals;
-        std::function<void(flecs::world&)> setup_systems;
-        static void process_contexts(flecs::world& world, std::vector<Context>& contexts);
+        std::function<void(flecs::world&)> SetupComponents;
+        std::function<void(flecs::world&)> SetupGlobals;
+        std::function<void(flecs::world&)> SetupSystems;
+        static void ProcessContexts(flecs::world& world, std::vector<Context>& contexts);
     };
 
     template <typename T> class ContextHandler {
       public:
-        static Context make_context() {
+        static Context MakeContext() {
             return {
-                T::setup_components,
-                T::setup_globals,
-                T::setup_systems,
+                T::SetupComponents,
+                T::SetupGlobals,
+                T::SetupSystems,
             };
         }
-        static void setup_components(flecs::world& world) {}
-        static void setup_globals(flecs::world& world) {}
-        static void setup_systems(flecs::world& world) {}
+        static void SetupComponents(flecs::world& world) {}
+        static void SetupGlobals(flecs::world& world) {}
+        static void SetupSystems(flecs::world& world) {}
     };
 }  // namespace broc::handler

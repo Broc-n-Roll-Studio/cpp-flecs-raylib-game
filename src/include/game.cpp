@@ -8,16 +8,16 @@
 #include <vector>
 
 namespace broc::config {
-    void initialize_world(flecs::world& world) {
+    void InitializeWorld(flecs::world& world) {
         std::vector<handler::Context> contexts{
-            pipeline::Handler::make_context(), input::Handler::make_context(),
-            entity::Handler::make_context(), player::Handler::make_context(),
-            camera::Handler::make_context()};
+            pipeline::Handler::MakeContext(), input::Handler::MakeContext(),
+            entity::Handler::MakeContext(), player::Handler::MakeContext(),
+            camera::Handler::MakeContext()};
 
-        handler::Context::process_contexts(world, contexts);
+        handler::Context::ProcessContexts(world, contexts);
     }
 
-    void initialize_window() {
+    void InitializeWindow() {
         InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Window title");
         SetTargetFPS(60);
     }

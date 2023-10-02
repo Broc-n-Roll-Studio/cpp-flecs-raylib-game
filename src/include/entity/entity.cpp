@@ -5,14 +5,14 @@
 namespace broc::entity {
     using namespace broc::types;
 
-    void Handler::setup_components(flecs::world& world) {
+    void Handler::SetupComponents(flecs::world& world) {
         world.component<Movable>();
         world.component<Drawable>();
     }
 
-    void Handler::setup_globals(flecs::world& world) {}
+    void Handler::SetupGlobals(flecs::world& world) {}
 
-    void Handler::setup_systems(flecs::world& world) {
+    void Handler::SetupSystems(flecs::world& world) {
         auto render_pipeline = world.get<pipeline::RenderPipeline>();
 
         world.system<Movable>().each([](Movable& m) {

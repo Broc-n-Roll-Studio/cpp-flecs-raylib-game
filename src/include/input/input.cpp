@@ -6,7 +6,7 @@
 namespace broc::input {
     using namespace broc::types;
 
-    Vector2 mapper::retrieve_movement_vector() {
+    Vector2 mapper::RetrieveMovementVector() {
         auto left_key = IsKeyDown(KEY_LEFT) || IsKeyDown(KEY_A);
         auto right_key = IsKeyDown(KEY_RIGHT) || IsKeyDown(KEY_D);
         auto up_key = IsKeyDown(KEY_UP) || IsKeyDown(KEY_W);
@@ -17,13 +17,13 @@ namespace broc::input {
         };
     }
 
-    void Handler::setup_components(flecs::world& world) {}
+    void Handler::SetupComponents(flecs::world& world) {}
 
-    void Handler::setup_globals(flecs::world& world) {}
+    void Handler::SetupGlobals(flecs::world& world) {}
 
-    void Handler::setup_systems(flecs::world& world) {
+    void Handler::SetupSystems(flecs::world& world) {
         world.system<Movable, const Player>().each([](Movable& m, const Player& p) {
-            m.velocity = Vector2Normalize(mapper::retrieve_movement_vector());
+            m.velocity = Vector2Normalize(mapper::RetrieveMovementVector());
         });
     }
 }  // namespace broc::input
