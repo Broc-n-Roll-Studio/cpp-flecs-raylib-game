@@ -7,15 +7,18 @@
 #include "player/player.h"
 #include <vector>
 
-void broc::config::initialize_world(flecs::world& world) {
-  std::vector<Context> contexts{
-      broc::pipeline::Handler::make_context(), broc::input::Handler::make_context(),
-      broc::entity::Handler::make_context(), broc::player::Handler::make_context(),
-      broc::camera::Handler::make_context()};
-  Context::process_contexts(world, contexts);
-}
+namespace broc::config {
+    void initialize_world(flecs::world& world) {
+        std::vector<handler::Context> contexts{
+            broc::pipeline::Handler::make_context(), broc::input::Handler::make_context(),
+            broc::entity::Handler::make_context(), broc::player::Handler::make_context(),
+            broc::camera::Handler::make_context()};
 
-void broc::config::initialize_window() {
-  InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Window title");
-  SetTargetFPS(60);
-}
+        handler::Context::process_contexts(world, contexts);
+    }
+
+    void initialize_window() {
+        InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Window title");
+        SetTargetFPS(60);
+    }
+}  // namespace broc::config

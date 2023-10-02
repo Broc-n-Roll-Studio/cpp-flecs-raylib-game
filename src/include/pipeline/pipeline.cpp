@@ -1,29 +1,33 @@
 #include "pipeline.h"
 #include "raylib.h"
 
-void broc::pipeline::Handler::setup_components(flecs::world& world) {
-  world.component<pipeline::RenderPipeline>();
-}
-void broc::pipeline::Handler::setup_globals(flecs::world& world) {
-  world.set<pipeline::RenderPipeline>(pipeline::RenderPipeline().setup(world));
-}
-void broc::pipeline::Handler::setup_systems(flecs::world& world) {}
+namespace broc::pipeline {
+    void Handler::setup_components(flecs::world& world) {
+        world.component<pipeline::RenderPipeline>();
+    }
 
-broc::pipeline::RenderPipeline broc::pipeline::RenderPipeline::setup(flecs::world& world) {
-  this->OnPreDraw = world.entity().add(flecs::Phase).depends_on(flecs::OnUpdate);
-  this->OnDraw = world.entity().add(flecs::Phase).depends_on(this->OnPreDraw);
-  this->OnPostDraw = world.entity().add(flecs::Phase).depends_on(this->OnDraw);
+    void Handler::setup_globals(flecs::world& world) {
+        world.set<pipeline::RenderPipeline>(pipeline::RenderPipeline().setup(world));
+    }
 
-  world.system().kind(this->OnPreDraw).iter([](flecs::iter& it) {
-    BeginDrawing();
-    BeginMode2D(*it.world().get<Camera2D>());
-    ClearBackground(RAYWHITE);
-  });
-  world.system().kind(this->OnPostDraw).iter([](flecs::iter& it) {
-    DrawFPS(10, 10);
-    EndMode2D();
-    EndDrawing();
-  });
+    void Handler::setup_systems(flecs::world& world) {}
 
-  return *this;
-}
+    RenderPipeline RenderPipeline::setup(flecs::world& world) {
+        this->m_OnPreDraw = world.entity().add(flecs::Phase).depends_on(flecs::OnUpdate);
+        this->OnDraw = world.entity().add(flecs::Phase).depends_on(this->m_OnPreDraw);
+        this->m_OnPostDraw = world.entity().add(flecs::Phase).depends_on(this->OnDraw);
+
+        world.system().kind(this->m_OnPreDraw).iter([](flecs::iter& it) {
+            BeginDrawing();
+            BeginMode2D(*it.world().get<Camera2D>());
+            ClearBackground(RAYWHITE);
+        });
+        world.system().kind(this->m_OnPostDraw).iter([](flecs::iter& it) {
+            DrawFPS(10, 10);
+            EndMode2D();
+            EndDrawing();
+        });
+
+        return *this;
+    }
+}  // namespace broc::pipeline
