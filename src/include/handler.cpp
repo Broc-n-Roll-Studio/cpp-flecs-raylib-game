@@ -1,6 +1,5 @@
-#include <iostream>
-
 #include "handler.h"
+#include <iostream>
 
 void Context::process_contexts(flecs::world &world, std::vector<Context> &contexts) {
   std::cout << contexts.size() << std::endl;

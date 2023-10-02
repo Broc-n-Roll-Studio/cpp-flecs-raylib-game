@@ -1,5 +1,5 @@
-#include "entity/entity.h"
 #include "player.h"
+#include "entity/entity.h"
 #include "types.h"
 
 using namespace broc::types;

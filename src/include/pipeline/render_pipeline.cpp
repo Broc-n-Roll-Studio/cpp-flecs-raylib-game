@@ -1,5 +1,5 @@
-#include "raylib.h"
 #include "render_pipeline.h"
+#include "raylib.h"
 
 void broc::pipeline::RenderPipeline::setup(flecs::world& world) {
   this->OnPreDraw = world.entity().add(flecs::Phase).depends_on(flecs::OnUpdate);

@@ -1,12 +1,11 @@
-#include <vector>
-
+#include "game.h"
 #include "camera/camera.h"
 #include "entity/entity.h"
-#include "game.h"
 #include "handler.h"
 #include "input/input.h"
 #include "pipeline/render_pipeline.h"
 #include "player/player.h"
+#include <vector>
 
 void broc::config::initialize_world(flecs::world& world) {
   broc::pipeline::RenderPipeline render_pipeline;

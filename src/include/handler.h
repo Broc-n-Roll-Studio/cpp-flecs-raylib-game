@@ -1,9 +1,8 @@
 #pragma once
 
+#include "flecs.h"
 #include <functional>
 #include <vector>
-
-#include "flecs.h"
 
 struct Context {
   std::function<void(flecs::world&)> setup_components;

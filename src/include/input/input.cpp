@@ -1,5 +1,5 @@
-#include "flecs.h"
 #include "input.h"
+#include "flecs.h"
 #include "raymath.h"
 #include "types.h"
 
