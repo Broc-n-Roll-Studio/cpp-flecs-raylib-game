@@ -2,7 +2,6 @@
 
 #include "flecs.h"
 #include <functional>
-#include <vector>
 
 namespace broc::handler {
     struct Context {

@@ -10,9 +10,9 @@
 namespace broc::config {
     void initialize_world(flecs::world& world) {
         std::vector<handler::Context> contexts{
-            broc::pipeline::Handler::make_context(), broc::input::Handler::make_context(),
-            broc::entity::Handler::make_context(), broc::player::Handler::make_context(),
-            broc::camera::Handler::make_context()};
+            pipeline::Handler::make_context(), input::Handler::make_context(),
+            entity::Handler::make_context(), player::Handler::make_context(),
+            camera::Handler::make_context()};
 
         handler::Context::process_contexts(world, contexts);
     }
