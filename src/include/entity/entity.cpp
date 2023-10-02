@@ -1,5 +1,5 @@
 #include "entity.h"
-#include "pipeline/render_pipeline.h"
+#include "pipeline/pipeline.h"
 #include "types.h"
 
 using namespace broc::types;

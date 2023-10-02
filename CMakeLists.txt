@@ -16,7 +16,7 @@ set(sources
   src/include/player/player.cpp
   src/include/input/input.cpp
   src/include/camera/camera.cpp
-  src/include/pipeline/render_pipeline.cpp
+  src/include/pipeline/pipeline.cpp
   src/include/game.cpp
   src/include/handler.cpp
 )

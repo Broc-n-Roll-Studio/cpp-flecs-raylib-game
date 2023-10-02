@@ -7,7 +7,6 @@ int main() {
 
   broc::config::initialize_world(world);
   broc::config::initialize_window();
-
   while (!WindowShouldClose()) {
     world.progress(GetFrameTime());
   }
