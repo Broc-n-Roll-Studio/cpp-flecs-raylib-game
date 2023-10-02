@@ -1,6 +1,6 @@
-#include "handler.h"
+#include "context.h"
 
-namespace broc::handler {
+namespace broc::context {
     void Context::ProcessContexts(flecs::world &world, std::vector<Context> &contexts) {
         for (auto context : contexts) {
             context.SetupComponents(world);
@@ -12,4 +12,4 @@ namespace broc::handler {
             context.SetupSystems(world);
         }
     }
-}  // namespace broc::handler
+}  // namespace broc::context

@@ -1,8 +1,6 @@
-#include "entity.h"
-#include "pipeline/pipeline.h"
-#include "types.h"
+#include "context/context.h"
 
-namespace broc::entity {
+namespace broc::context::entity {
     using namespace broc::types;
 
     void Handler::SetupComponents(flecs::world& world) {
@@ -26,4 +24,4 @@ namespace broc::entity {
                 DrawCube({m.position.x, m.position.y, 0}, d.size, d.size, 0, d.color);
             });
     }
-}  // namespace broc::entity
+}  // namespace broc::context::entity

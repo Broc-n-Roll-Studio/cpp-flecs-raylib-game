@@ -1,10 +1,6 @@
-#include "camera.h"
-#include "flecs.h"
-#include "player/player.h"
-#include "raylib.h"
-#include "types.h"
+#include "context/context.h"
 
-namespace broc::camera {
+namespace broc::context::camera {
     using namespace broc::types;
 
     void Handler::SetupComponents(flecs::world& world) { world.component<Camera2D>(); }
@@ -20,4 +16,4 @@ namespace broc::camera {
                            m.position.y - GetScreenHeight() * 0.5f / cam->zoom};
         });
     }
-}  // namespace broc::camera
+}  // namespace broc::context::camera

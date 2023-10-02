@@ -12,13 +12,13 @@ add_subdirectory(libs/raylib)
 add_subdirectory(libs/flecs)
 
 set(sources
-  src/include/entity/entity.cpp
-  src/include/player/player.cpp
-  src/include/input/input.cpp
-  src/include/camera/camera.cpp
-  src/include/pipeline/pipeline.cpp
   src/include/game.cpp
-  src/include/handler.cpp
+  src/include/context/context.cpp
+  src/include/context/definitions/camera.cpp
+  src/include/context/definitions/entity.cpp
+  src/include/context/definitions/input.cpp
+  src/include/context/definitions/pipeline.cpp
+  src/include/context/definitions/player.cpp
 )
 set(exe_sources
   src/main.cpp

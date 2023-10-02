@@ -1,8 +1,6 @@
-#include "player.h"
-#include "entity/entity.h"
-#include "types.h"
+#include "context/context.h"
 
-namespace broc::player {
+namespace broc::context::player {
     using namespace types;
 
     void Handler::SetupComponents(flecs::world& world) { world.component<Player>(); }
@@ -15,4 +13,4 @@ namespace broc::player {
             d = {50, RED};
         });
     }
-}  // namespace broc::player
+}  // namespace broc::context::player

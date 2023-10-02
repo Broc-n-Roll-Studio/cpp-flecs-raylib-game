@@ -1,9 +1,7 @@
-#include "input.h"
-#include "flecs.h"
+#include "context/context.h"
 #include "raymath.h"
-#include "types.h"
 
-namespace broc::input {
+namespace broc::context::input {
     using namespace broc::types;
 
     Vector2 mapper::RetrieveMovementVector() {
@@ -26,4 +24,4 @@ namespace broc::input {
             m.velocity = Vector2Normalize(mapper::RetrieveMovementVector());
         });
     }
-}  // namespace broc::input
+}  // namespace broc::context::input

@@ -1,20 +1,17 @@
 #include "game.h"
-#include "camera/camera.h"
-#include "entity/entity.h"
-#include "handler.h"
-#include "input/input.h"
-#include "pipeline/pipeline.h"
-#include "player/player.h"
+#include "context/context.h"
 #include <vector>
 
 namespace broc::config {
     void InitializeWorld(flecs::world& world) {
-        std::vector<handler::Context> contexts{
+        using namespace context;
+
+        std::vector<context::Context> contexts{
             pipeline::Handler::MakeContext(), input::Handler::MakeContext(),
             entity::Handler::MakeContext(), player::Handler::MakeContext(),
             camera::Handler::MakeContext()};
 
-        handler::Context::ProcessContexts(world, contexts);
+        Context::ProcessContexts(world, contexts);
     }
 
     void InitializeWindow() {

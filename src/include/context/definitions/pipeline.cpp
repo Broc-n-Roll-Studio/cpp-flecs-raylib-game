@@ -1,7 +1,6 @@
-#include "pipeline.h"
-#include "raylib.h"
+#include "context/context.h"
 
-namespace broc::pipeline {
+namespace broc::context::pipeline {
     void Handler::SetupComponents(flecs::world& world) {
         world.component<pipeline::RenderPipeline>();
     }
@@ -30,4 +29,4 @@ namespace broc::pipeline {
 
         return *this;
     }
-}  // namespace broc::pipeline
+}  // namespace broc::context::pipeline
