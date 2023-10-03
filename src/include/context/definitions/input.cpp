@@ -20,8 +20,23 @@ namespace broc::context::input {
     void Handler::SetupGlobals(flecs::world& world) {}
 
     void Handler::SetupSystems(flecs::world& world) {
-        world.system<Movable, const Player>().each([](Movable& m, const Player& p) {
-            m.velocity = Vector2Normalize(mapper::RetrieveMovementVector());
+        auto render_pipeline = world.get<pipeline::RenderPipeline>();
+
+        world.system<Movable, const Player>("Player Movement")
+            .each([](Movable& m, const Player& p) {
+                m.velocity = Vector2Normalize(mapper::RetrieveMovementVector());
+            });
+
+        world.system("Camera Zoom").kind(render_pipeline->OnDraw).iter([](flecs::iter& it) {
+            Camera2D* cam = it.world().get_mut<Camera2D>();
+
+            float wheel = GetMouseWheelMove();
+
+            const float minimum_zoom = 0.125f;
+            const float maximum_zoom = 5.0f;
+
+            if (wheel != 0)
+                cam->zoom = Clamp(cam->zoom + wheel * minimum_zoom, minimum_zoom, maximum_zoom);
         });
     }
 }  // namespace broc::context::input

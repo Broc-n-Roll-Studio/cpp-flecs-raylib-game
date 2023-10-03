@@ -1,4 +1,5 @@
 #include "context/context.h"
+#include "raymath.h"
 
 namespace broc::context::pipeline {
     void Handler::SetupComponents(flecs::world& world) {
@@ -16,12 +17,14 @@ namespace broc::context::pipeline {
         this->OnDraw = world.entity().add(flecs::Phase).depends_on(this->m_OnPreDraw);
         this->m_OnPostDraw = world.entity().add(flecs::Phase).depends_on(this->OnDraw);
 
-        world.system().kind(this->m_OnPreDraw).iter([](flecs::iter& it) {
+        world.system("Pre Draw").kind(this->m_OnPreDraw).iter([](flecs::iter& it) {
+            auto camera = it.world().get_mut<Camera2D>();
+
             BeginDrawing();
-            BeginMode2D(*it.world().get<Camera2D>());
+            BeginMode2D(*camera);
             ClearBackground(RAYWHITE);
         });
-        world.system().kind(this->m_OnPostDraw).iter([](flecs::iter& it) {
+        world.system("Post Draw").kind(this->m_OnPostDraw).iter([](flecs::iter& it) {
             EndMode2D();
             DrawFPS(10, 10);
             EndDrawing();

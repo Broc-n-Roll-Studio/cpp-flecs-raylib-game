@@ -8,7 +8,6 @@ ConstructorInitializerAllOnOneLineOrOnePerLine: true
 IncludeBlocks: Merge
 IndentPPDirectives: AfterHash
 NamespaceIndentation: All
-BreakBeforeBinaryOperators: All
 BreakBeforeTernaryOperators: true
 BreakBeforeBraces: Attach
 ColumnLimit: 100

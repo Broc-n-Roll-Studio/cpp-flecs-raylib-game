@@ -1,4 +1,5 @@
 #include "context/context.h"
+#include "raymath.h"
 
 namespace broc::context::camera {
     using namespace broc::types;
@@ -12,8 +13,9 @@ namespace broc::context::camera {
     }
 
     void Handler::SetupSystems(flecs::world& world) {
-        world.system<Movable>().with<Player>().each([&world](Movable& m) {
+        world.system<Movable>("Camera Following Player").with<Player>().each([&world](Movable& m) {
             Camera2D* cam = world.get_mut<Camera2D>();
+
             cam->target = {m.position.x - GetScreenWidth() * 0.5f / cam->zoom,
                            m.position.y - GetScreenHeight() * 0.5f / cam->zoom};
         });
