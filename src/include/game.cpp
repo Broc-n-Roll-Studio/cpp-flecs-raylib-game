@@ -8,8 +8,8 @@ namespace broc::config {
 
         std::vector<context::Context> contexts{
             pipeline::Handler::MakeContext(), input::Handler::MakeContext(),
-            entity::Handler::MakeContext(), player::Handler::MakeContext(),
-            camera::Handler::MakeContext()};
+            entity::Handler::MakeContext(),   player::Handler::MakeContext(),
+            enemy::Handler::MakeContext(),    camera::Handler::MakeContext()};
 
         Context::ProcessContexts(world, contexts);
     }

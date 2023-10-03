@@ -17,6 +17,8 @@ namespace broc::types {
     };
 
     struct Player {};
+
+    struct Enemy {};
 }  // namespace broc::types
 
 namespace broc::context {
@@ -102,4 +104,13 @@ namespace broc::context {
             static void SetupSystems(flecs::world& world);
         };
     }  // namespace player
+
+    namespace enemy {
+        class Handler : public ContextHandler<Handler> {
+          public:
+            static void SetupComponents(flecs::world& world);
+            static void SetupGlobals(flecs::world& world);
+            static void SetupSystems(flecs::world& world);
+        };
+    }  // namespace enemy
 }  // namespace broc::context

@@ -13,7 +13,7 @@ BreakBeforeTernaryOperators: true
 BreakBeforeBraces: Attach
 ColumnLimit: 100
 IndentWidth: 4
-AllowShortFunctionsOnASingleLine: None
+AllowShortFunctionsOnASingleLine: Empty
 
 IncludeCategories:
   - Regex: '^"(llvm|llvm-c|clang|clang-c)/'

@@ -22,8 +22,8 @@ namespace broc::context::pipeline {
             ClearBackground(RAYWHITE);
         });
         world.system().kind(this->m_OnPostDraw).iter([](flecs::iter& it) {
-            DrawFPS(10, 10);
             EndMode2D();
+            DrawFPS(10, 10);
             EndDrawing();
         });
 

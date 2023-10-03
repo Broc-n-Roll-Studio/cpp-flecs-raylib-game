@@ -19,6 +19,7 @@ set(sources
   src/include/context/definitions/input.cpp
   src/include/context/definitions/pipeline.cpp
   src/include/context/definitions/player.cpp
+  src/include/context/definitions/enemy.cpp
 )
 set(exe_sources
   src/main.cpp
