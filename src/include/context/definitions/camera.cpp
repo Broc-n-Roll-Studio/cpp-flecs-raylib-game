@@ -3,7 +3,9 @@
 namespace broc::context::camera {
     using namespace broc::types;
 
-    void Handler::SetupComponents(flecs::world& world) { world.component<Camera2D>(); }
+    void Handler::SetupComponents(flecs::world& world) {
+        world.component<Camera2D>();
+    }
 
     void Handler::SetupGlobals(flecs::world& world) {
         world.set<Camera2D>({{0, 0}, {0, 0}, 0, 1.0f});

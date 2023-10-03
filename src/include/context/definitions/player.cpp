@@ -3,7 +3,9 @@
 namespace broc::context::player {
     using namespace types;
 
-    void Handler::SetupComponents(flecs::world& world) { world.component<Player>(); }
+    void Handler::SetupComponents(flecs::world& world) {
+        world.component<Player>();
+    }
 
     void Handler::SetupGlobals(flecs::world& world) {}
 
