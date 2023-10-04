@@ -14,9 +14,10 @@ set(BUILD_GAMES    OFF CACHE BOOL "" FORCE) # or games
 add_subdirectory(libs/raylib)
 add_subdirectory(libs/flecs)
 
+file(GLOB_RECURSE HEADERS src/*.h)
 file(GLOB_RECURSE SRC src/*.cpp)
 
-add_executable(${PROJECT_NAME} ${SRC})
+add_executable(${PROJECT_NAME} ${HEADERS} ${SRC})
 
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src/include)
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib flecs::flecs_static)

@@ -1,17 +1,26 @@
 #include "game.h"
-#include "context/context.h"
-#include <vector>
+#include "modules.h"
 
 namespace broc::config {
     void InitializeWorld(flecs::world& world) {
-        using namespace context;
+        world.import <modules::GamePipelineModule>();
+        world.import <modules::InputModule>();
+        world.import <modules::EntityModule>();
+        world.import <modules::EnemyModule>();
+        world.import <modules::PlayerModule>();
+        world.import <modules::CameraModule>();
 
-        std::vector<context::Context> contexts{
-            pipeline::Handler::MakeContext(), input::Handler::MakeContext(),
-            entity::Handler::MakeContext(),   player::Handler::MakeContext(),
-            enemy::Handler::MakeContext(),    camera::Handler::MakeContext()};
+        world.entity().add<types::Player>().set([](types::Movable& m, types::Drawable& d) {
+            m = {{800.0 / 2, 450.0 / 2}, {0, 0}, 300};
+            d = {50, RED};
+        });
 
-        Context::ProcessContexts(world, contexts);
+        world.entity("Enemy Entity")
+            .add<types::Enemy>()
+            .set([](types::Movable& m, types::Drawable& d) {
+                m = {.position = {50, 50}, .velocity = {0, 0}, .speed_force = 200};
+                d = {.size = 32.0, .color = BLUE};
+            });
     }
 
     void InitializeWindow() {
