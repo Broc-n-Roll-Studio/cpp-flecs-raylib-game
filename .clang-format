@@ -1,28 +1,13 @@
 ---
-BasedOnStyle: Google
-AccessModifierOffset: -2
-AlignTrailingComments: true
-AllowAllParametersOfDeclarationOnNextLine: false
-AlwaysBreakTemplateDeclarations: No
-ConstructorInitializerAllOnOneLineOrOnePerLine: true
-IncludeBlocks: Merge
-IndentPPDirectives: AfterHash
+BasedOnStyle: microsoft
+AccessModifierOffset: -1
 NamespaceIndentation: All
-BreakBeforeTernaryOperators: true
-BreakBeforeBraces: Attach
-ColumnLimit: 100
-IndentWidth: 4
+UseTab: Never
+AlignAfterOpenBracket: DontAlign
+ContinuationIndentWidth: 2
+IndentWidth: 2
 AllowShortFunctionsOnASingleLine: Empty
-
-IncludeCategories:
-  - Regex: '^"(llvm|llvm-c|clang|clang-c)/'
-    Priority: 2
-    SortPriority: 2
-    CaseSensitive: true
-  - Regex: '^((<|")(gtest|gmock|isl|json)/)'
-    Priority: 3
-  - Regex: "<[[:alnum:].]+>"
-    Priority: 4
-  - Regex: ".*"
-    Priority: 1
-    SortPriority: 0
+BraceWrapping:
+  AfterControlStatement: false
+  AfterFunction: false
+  BeforeElse: false
