@@ -4,5 +4,5 @@
 
 namespace broc::input
 {
-  Vector2 RetrieveMovementVector();
+  Vector3 RetrieveMovementVector();
 } // namespace broc::input

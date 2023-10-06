@@ -6,8 +6,8 @@ namespace broc::types
 {
   struct Movable
   {
-    Vector2 position;
-    Vector2 velocity;
+    Vector3 position;
+    Vector3 velocity;
     float speed_force;
   };
 

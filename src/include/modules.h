@@ -31,19 +31,35 @@ namespace broc::modules
     CameraModule(flecs::world &world) {
       world.module<CameraModule>("CameraModule");
 
-      m_camera2d = world.component<Camera2D>();
+      m_camera3d = world.component<Camera3D>();
 
-      world.set<Camera2D>({{0, 0}, {0, 0}, 0, 1.0f});
+      {
+        auto cam = Camera3D{
+          .position = {0, 2, 4},
+          .target = {0, 2, 0},
+          .up = {0, 1, 0},
+          .fovy = 60,
+          .projection = CAMERA_PERSPECTIVE,
+        };
+        world.set<Camera3D>(cam);
+      }
 
       m_follow_player = world.system<Movable>("Camera Following Player").with<Player>().each([&world](Movable &m) {
-        Camera2D *cam = world.get_mut<Camera2D>();
+        Camera3D *cam = world.get_mut<Camera3D>();
+        cam->position = Vector3Add(m.position, {0, 16, 25});
+        cam->target = Vector3Add(m.position, {0, 10, 0});
 
-        cam->target = {
-          m.position.x - GetScreenWidth() * 0.5f / cam->zoom, m.position.y - GetScreenHeight() * 0.5f / cam->zoom};
+        UpdateCameraPro(cam, {0, 0, 0},
+          {
+            GetMouseDelta().x * 0.05f, // Rotation: yaw
+            GetMouseDelta().y * 0.05f, // Rotation: pitch
+            0.0f                       // Rotation: roll
+          },
+          GetMouseWheelMove() * 2.0f);
       });
     }
 
-    flecs::entity m_camera2d;
+    flecs::entity m_camera3d;
     flecs::entity m_follow_player;
   };
 
@@ -56,7 +72,7 @@ namespace broc::modules
 
       m_player_movement =
         world.system<Movable, const Player>("Player Movement Input").each([](Movable &m, const Player &p) {
-          m.velocity = Vector2Normalize(input::RetrieveMovementVector());
+          m.velocity = Vector3Normalize(input::RetrieveMovementVector());
         });
 
       m_camera_zoom = world.system("Camera Zoom Input").kind(render_pipeline->OnDraw).iter([](flecs::iter &it) {
@@ -89,13 +105,12 @@ namespace broc::modules
       m_move = world.system<Movable>("Move Entities").each([](Movable &m) {
         m.position.x += m.velocity.x * m.speed_force * GetFrameTime();
         m.position.y += m.velocity.y * m.speed_force * GetFrameTime();
+        m.position.z += m.velocity.z * m.speed_force * GetFrameTime();
       });
 
       m_draw = world.system<Drawable, Movable>("Draw Entities")
                  .kind(render_pipeline->OnDraw)
-                 .each([](Drawable &d, Movable &m) {
-                   DrawCube({m.position.x, m.position.y, 0}, d.size, d.size, 0, d.color);
-                 });
+                 .each([](Drawable &d, Movable &m) { DrawCube(m.position, d.size, d.size, d.size, d.color); });
     }
 
     flecs::entity m_movable;
@@ -123,27 +138,27 @@ namespace broc::modules
 
       m_enemy = world.component<Enemy>();
 
-      m_chase_player =
-        world.system<Movable>("Enemy Chasing Player").with<Enemy>().iter([](flecs::iter &it, Movable *m) {
-          auto player = it.world().filter_builder<Movable>().with<Player>().build().first().get<Movable>();
-          Vector2 aux;
-
-          for (auto i : it) {
-            aux.x = player->position.x - m[i].position.x;
-            aux.y = player->position.y - m[i].position.y;
-
-            const float nullify_speed_threshold = m[i].speed_force * 0.0083333;
-
-            if (fabs(aux.x) < nullify_speed_threshold && fabs(aux.y) < nullify_speed_threshold) {
-              m[i].velocity = Vector2Zero();
-            } else {
-              m[i].velocity = Vector2Normalize(aux);
-            }
-          }
-        });
+      // m_chase_player =
+      //   world.system<Movable>("Enemy Chasing Player").with<Enemy>().iter([](flecs::iter &it, Movable *m) {
+      //     auto player = it.world().filter_builder<Movable>().with<Player>().build().first().get<Movable>();
+      //     Vector2 aux;
+      //
+      //     for (auto i : it) {
+      //       aux.x = player->position.x - m[i].position.x;
+      //       aux.y = player->position.y - m[i].position.y;
+      //
+      //       const float nullify_speed_threshold = m[i].speed_force * 0.0083333;
+      //
+      //       if (fabs(aux.x) < nullify_speed_threshold && fabs(aux.y) < nullify_speed_threshold) {
+      //         m[i].velocity = Vector2Zero();
+      //       } else {
+      //         m[i].velocity = Vector2Normalize(aux);
+      //       }
+      //     }
+      //   });
     }
 
     flecs::entity m_enemy;
-    flecs::entity m_chase_player;
+    // flecs::entity m_chase_player;
   };
 } // namespace broc::modules
