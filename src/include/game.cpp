@@ -15,6 +15,13 @@ namespace broc::config
       b = {.bid = {}, .boxColliderProportions = {5, 5, 5}, .boxDrawProportions = {5, 5, 5}, .boxColor = RED};
     });
 
+    world.entity().set([](types::TestBodyStatic &b) {
+      b = {.bid = {},
+        .boxColliderProportions = {100.0f, 1.0f, 100.0f},
+        .boxDrawProportions = {100.0f, 1.0f, 100.0f},
+        .boxColor = GREEN};
+    });
+
     // world.entity("Enemy Entity").add<types::Enemy>().set([](types::Movable &m, types::Drawable &d) {
     //   m = {.position = {50, 6, 50}, .velocity = {0, 0}, .speed_force = 200};
     //   d = {.size = 32.0, .color = BLUE};

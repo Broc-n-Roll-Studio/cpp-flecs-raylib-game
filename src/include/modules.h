@@ -89,6 +89,8 @@ namespace broc::modules
       world.module<EntityModule>("EntityModule");
       m_movable = world.component<Movable>();
       m_drawable = world.component<Drawable>();
+      m_test_body = world.component<TestBody>();
+      m_test_body_static = world.component<TestBodyStatic>();
 
       auto render_pipeline = world.get<pipelines::RenderPipeline>();
       auto physics_pipeline = world.get<pipelines::PhysicsPipeline>();
@@ -99,7 +101,7 @@ namespace broc::modules
         m.position.z += m.velocity.z * m.speed_force * GetFrameTime();
       });
 
-      m_draw = world.system<TestBody>("Draw Entities").kind(render_pipeline->OnDraw).each([](TestBody &b) {
+      m_draw_dynamic = world.system<TestBody>("Draw Entities").kind(render_pipeline->OnDraw).each([](TestBody &b) {
         auto body_position =
           broc::physics::PhysicsWorld::getInstance()->physics_system->GetBodyInterface().GetCenterOfMassPosition(b.bid);
 
@@ -108,12 +110,25 @@ namespace broc::modules
 
         DrawCubeV({body_position.GetX(), body_position.GetY(), body_position.GetZ()}, b.boxDrawProportions, b.boxColor);
       });
+
+      m_draw_static =
+        world.system<TestBodyStatic>("Draw Entities Static").kind(render_pipeline->OnDraw).each([](TestBodyStatic &b) {
+          auto body_position =
+            broc::physics::PhysicsWorld::getInstance()->physics_system->GetBodyInterface().GetCenterOfMassPosition(
+              b.bid);
+
+          DrawCubeV(
+            {body_position.GetX(), body_position.GetY(), body_position.GetZ()}, b.boxDrawProportions, b.boxColor);
+        });
     }
 
     flecs::entity m_movable;
     flecs::entity m_drawable;
     flecs::entity m_move;
-    flecs::entity m_draw;
+    flecs::entity m_test_body;
+    flecs::entity m_test_body_static;
+    flecs::entity m_draw_dynamic;
+    flecs::entity m_draw_static;
   };
 
   class PlayerModule

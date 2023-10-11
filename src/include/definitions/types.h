@@ -28,6 +28,13 @@ namespace broc::types
     Vector3 boxDrawProportions;
     Color boxColor;
   };
+  struct TestBodyStatic
+  {
+    JPH::BodyID bid;
+    JPH::Vec3 boxColliderProportions;
+    Vector3 boxDrawProportions;
+    Color boxColor;
+  };
 
   struct Player
   {
