@@ -106,7 +106,7 @@ namespace broc::modules
         std::cout << "X: " << body_position.GetX() << " Y: " << body_position.GetY() << " Z: " << body_position.GetZ()
                   << std::endl;
 
-        DrawCube({body_position.GetX(), body_position.GetY(), body_position.GetZ()}, 5, 5, 5, RED);
+        DrawCubeV({body_position.GetX(), body_position.GetY(), body_position.GetZ()}, b.boxDrawProportions, b.boxColor);
       });
     }
 

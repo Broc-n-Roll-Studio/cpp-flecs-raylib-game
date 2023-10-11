@@ -51,8 +51,8 @@ broc::pipelines::PhysicsPipeline broc::pipelines::PhysicsPipeline::Setup(flecs::
       for (auto i : it) {
         // Now create a dynamic body to bounce on the floor
         // Note that this uses the shorthand version of creating and adding a body to the world
-        JPH::BodyCreationSettings sphere_settings(new JPH::BoxShape({25, 25, 25}), JPH::Vec3(5.0, 20.0, 5.0),
-          JPH::Quat::sIdentity(), JPH::EMotionType::Dynamic, broc::physics::Layers::MOVING);
+        JPH::BodyCreationSettings sphere_settings(new JPH::BoxShape(b[i].boxColliderProportions),
+          JPH::Vec3(5.0, 20.0, 5.0), JPH::Quat::sIdentity(), JPH::EMotionType::Dynamic, broc::physics::Layers::MOVING);
         b[i].bid = body_interface.CreateAndAddBody(sphere_settings, JPH::EActivation::Activate);
 
         // Now you can interact with the dynamic body, in this case we're going to give it a velocity.
