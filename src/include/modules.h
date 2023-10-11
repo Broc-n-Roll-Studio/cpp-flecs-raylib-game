@@ -1,11 +1,13 @@
 #pragma once
 
 #include "definitions/input.h"
-#include "definitions/pipeline.h"
+#include "definitions/physics.h"
+#include "definitions/pipelines.h"
 #include "definitions/types.h"
 #include "flecs.h"
 #include "raylib.h"
 #include "raymath.h"
+#include <iostream>
 
 namespace broc::modules
 {
@@ -18,11 +20,14 @@ namespace broc::modules
       world.module<GamePipelineModule>("GamePipelineModule");
 
       m_render_pipeline = world.component<pipelines::RenderPipeline>();
+      m_physics_pipeline = world.component<pipelines::PhysicsPipeline>();
 
+      world.set<pipelines::PhysicsPipeline>(pipelines::PhysicsPipeline().Setup(world));
       world.set<pipelines::RenderPipeline>(pipelines::RenderPipeline().Setup(world));
     }
 
     flecs::entity m_render_pipeline;
+    flecs::entity m_physics_pipeline;
   };
 
   class CameraModule
@@ -35,25 +40,25 @@ namespace broc::modules
 
       {
         auto cam = Camera3D{
-          .position = {0, 2, 4},
-          .target = {0, 2, 0},
-          .up = {0, 1, 0},
+          .position = {0, 10.f, 20.f},
+          .target = {0, 2.f, 0},
+          .up = {0, 1.f, 0},
           .fovy = 60,
           .projection = CAMERA_PERSPECTIVE,
         };
         world.set<Camera3D>(cam);
       }
 
-      m_follow_player = world.system<Movable>("Camera Following Player").with<Player>().each([&world](Movable &m) {
+      m_follow_player = world.system<TestBody>("Camera Following Player").with<Player>().each([&world](TestBody &t) {
         Camera3D *cam = world.get_mut<Camera3D>();
-        cam->position = Vector3Add(m.position, {0, 16, 25});
-        cam->target = Vector3Add(m.position, {0, 10, 0});
+        const auto cam_sensitivity = 0.05f;
+        const auto mouse_delta = GetMouseDelta();
 
-        UpdateCameraPro(cam, {0, 0, 0},
+        UpdateCameraPro(cam, Vector3Zero(),
           {
-            GetMouseDelta().x * 0.05f, // Rotation: yaw
-            GetMouseDelta().y * 0.05f, // Rotation: pitch
-            0.0f                       // Rotation: roll
+            mouse_delta.x * cam_sensitivity, // Rotation: yaw
+            mouse_delta.y * cam_sensitivity, // Rotation: pitch
+            0                                // Rotation: roll
           },
           GetMouseWheelMove() * 2.0f);
       });
@@ -68,28 +73,13 @@ namespace broc::modules
    public:
     InputModule(flecs::world &world) {
       world.module<InputModule>("InputModule");
-      auto render_pipeline = world.get<pipelines::RenderPipeline>();
 
       m_player_movement =
         world.system<Movable, const Player>("Player Movement Input").each([](Movable &m, const Player &p) {
           m.velocity = Vector3Normalize(input::RetrieveMovementVector());
         });
-
-      m_camera_zoom = world.system("Camera Zoom Input").kind(render_pipeline->OnDraw).iter([](flecs::iter &it) {
-        Camera2D *cam = it.world().get_mut<Camera2D>();
-
-        float wheel = GetMouseWheelMove();
-
-        const float minimum_zoom = 0.125f;
-        const float maximum_zoom = 5.0f;
-
-        if (wheel != 0) {
-          cam->zoom = Clamp(cam->zoom + wheel * minimum_zoom, minimum_zoom, maximum_zoom);
-        }
-      });
     }
     flecs::entity m_player_movement;
-    flecs::entity m_camera_zoom;
   };
 
   class EntityModule
@@ -101,6 +91,7 @@ namespace broc::modules
       m_drawable = world.component<Drawable>();
 
       auto render_pipeline = world.get<pipelines::RenderPipeline>();
+      auto physics_pipeline = world.get<pipelines::PhysicsPipeline>();
 
       m_move = world.system<Movable>("Move Entities").each([](Movable &m) {
         m.position.x += m.velocity.x * m.speed_force * GetFrameTime();
@@ -108,9 +99,15 @@ namespace broc::modules
         m.position.z += m.velocity.z * m.speed_force * GetFrameTime();
       });
 
-      m_draw = world.system<Drawable, Movable>("Draw Entities")
-                 .kind(render_pipeline->OnDraw)
-                 .each([](Drawable &d, Movable &m) { DrawCube(m.position, d.size, d.size, d.size, d.color); });
+      m_draw = world.system<TestBody>("Draw Entities").kind(render_pipeline->OnDraw).each([](TestBody &b) {
+        auto body_position =
+          broc::physics::PhysicsWorld::getInstance()->physics_system->GetBodyInterface().GetCenterOfMassPosition(b.bid);
+
+        std::cout << "X: " << body_position.GetX() << " Y: " << body_position.GetY() << " Z: " << body_position.GetZ()
+                  << std::endl;
+
+        DrawCube({body_position.GetX(), body_position.GetY(), body_position.GetZ()}, 5, 5, 5, RED);
+      });
     }
 
     flecs::entity m_movable;

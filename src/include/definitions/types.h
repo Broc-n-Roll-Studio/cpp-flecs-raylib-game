@@ -1,5 +1,9 @@
 #pragma once
 
+#include <Jolt/Jolt.h>
+///
+
+#include "Jolt/Physics/Body/BodyID.h"
 #include "raylib.h"
 
 namespace broc::types
@@ -15,6 +19,14 @@ namespace broc::types
   {
     float size;
     Color color;
+  };
+
+  struct TestBody
+  {
+    JPH::BodyID bid;
+    JPH::Vec3 boxColliderProportions;
+    Vector3 boxDrawProportions;
+    Color boxColor;
   };
 
   struct Player

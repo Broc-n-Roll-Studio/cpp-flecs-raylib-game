@@ -8,6 +8,7 @@ int main() {
   broc::config::InitializeWorld(world);
   broc::config::InitializeWindow();
 
+  DisableCursor();
   while (!WindowShouldClose()) {
     world.progress(GetFrameTime());
   }

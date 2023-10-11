@@ -11,9 +11,8 @@ namespace broc::config
     world.import <modules::PlayerModule>();
     world.import <modules::CameraModule>();
 
-    world.entity().add<types::Player>().set([](types::Movable &m, types::Drawable &d) {
-      m = {.position = {0, 6, 0}, .velocity = {0, 0, 0}, .speed_force = 50};
-      d = {5, RED};
+    world.entity().add<types::Player>().set([](types::TestBody b) {
+      b = {.bid = {}, .boxColliderProportions = {50, 50, 50}, .boxDrawProportions = {50, 50, 50}, .boxColor = RED};
     });
 
     // world.entity("Enemy Entity").add<types::Enemy>().set([](types::Movable &m, types::Drawable &d) {
