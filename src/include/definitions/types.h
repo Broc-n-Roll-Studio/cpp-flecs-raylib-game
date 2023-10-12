@@ -4,36 +4,32 @@
 ///
 
 #include "Jolt/Physics/Body/BodyID.h"
+#include "Jolt/Physics/Collision/Shape/Shape.h"
 #include "raylib.h"
 
 namespace broc::types
 {
-  struct Movable
+  struct Stats
   {
-    Vector3 position;
-    Vector3 velocity;
-    float speed_force;
+    float movement_speed;
   };
 
   struct Drawable
   {
-    float size;
+    Vector3 proportions;
     Color color;
   };
 
-  struct TestBody
+  struct DynamicBody
   {
     JPH::BodyID bid;
-    JPH::Vec3 boxColliderProportions;
-    Vector3 boxDrawProportions;
-    Color boxColor;
+    JPH::Vec3 box_collider_proportions;
   };
-  struct TestBodyStatic
+
+  struct StaticBody
   {
     JPH::BodyID bid;
-    JPH::Vec3 boxColliderProportions;
-    Vector3 boxDrawProportions;
-    Color boxColor;
+    JPH::Vec3 box_collider_proportions;
   };
 
   struct Player

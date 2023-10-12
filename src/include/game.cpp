@@ -1,4 +1,5 @@
 #include "game.h"
+#include "definitions/types.h"
 #include "modules.h"
 
 namespace broc::config
@@ -11,21 +12,17 @@ namespace broc::config
     world.import <modules::PlayerModule>();
     world.import <modules::CameraModule>();
 
-    world.entity().add<types::Player>().set([](types::TestBody &b) {
-      b = {.bid = {}, .boxColliderProportions = {5, 5, 5}, .boxDrawProportions = {5, 5, 5}, .boxColor = RED};
+    // Player
+    world.entity().add<types::Player>().set([](types::DynamicBody &b, types::Drawable &d) {
+      b = {.bid = {}, .box_collider_proportions = {5, 5, 5}};
+      d = {.proportions = {5, 5, 5}, .color = RED};
     });
 
-    world.entity().set([](types::TestBodyStatic &b) {
-      b = {.bid = {},
-        .boxColliderProportions = {100.0f, 1.0f, 100.0f},
-        .boxDrawProportions = {100.0f, 1.0f, 100.0f},
-        .boxColor = GREEN};
+    // Ground
+    world.entity().set([](types::StaticBody &b, types::Drawable &d) {
+      b = {.bid = {}, .box_collider_proportions = {128, 1, 128}};
+      d = {.proportions = {128, 1, 128}, .color = LIME};
     });
-
-    // world.entity("Enemy Entity").add<types::Enemy>().set([](types::Movable &m, types::Drawable &d) {
-    //   m = {.position = {50, 6, 50}, .velocity = {0, 0}, .speed_force = 200};
-    //   d = {.size = 32.0, .color = BLUE};
-    // });
   }
 
   void InitializeWindow() {

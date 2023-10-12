@@ -1,6 +1,5 @@
 #include "pipelines.h"
 #include <Jolt/Jolt.h>
-#include <iostream>
 ///
 #include "Jolt/Physics/Body/BodyCreationSettings.h"
 #include "Jolt/Physics/Collision/Shape/BoxShape.h"
@@ -35,9 +34,9 @@ broc::pipelines::PhysicsPipeline broc::pipelines::PhysicsPipeline::Setup(flecs::
   this->OnFixedUpdate = world.entity().add(flecs::Phase).depends_on(flecs::OnUpdate);
   this->m_OnPostFixedUpdate = world.entity().add(flecs::Phase).depends_on(this->OnFixedUpdate);
 
-  world.system<broc::types::TestBody>("Physics Startup")
+  world.system<broc::types::DynamicBody>("Physics Startup")
     .kind(flecs::OnStart)
-    .iter([](flecs::iter &it, types::TestBody *b) {
+    .iter([](flecs::iter &it, types::DynamicBody *b) {
       std::cout << "PHYSICS STARTUP" << std::endl;
 
       // The main way to interact with the bodies in the physics system is through the body interface. There is a
@@ -49,7 +48,7 @@ broc::pipelines::PhysicsPipeline broc::pipelines::PhysicsPipeline::Setup(flecs::
       for (auto i : it) {
         // Now create a dynamic body to bounce on the floor
         // Note that this uses the shorthand version of creating and adding a body to the world
-        JPH::BodyCreationSettings shape_settings(new JPH::BoxShape(b[i].boxColliderProportions),
+        JPH::BodyCreationSettings shape_settings(new JPH::BoxShape(b[i].box_collider_proportions),
           JPH::Vec3(5.0, 20.0, 5.0), JPH::Quat::sIdentity(), JPH::EMotionType::Dynamic, broc::physics::Layers::MOVING);
         b[i].bid = body_interface.CreateAndAddBody(shape_settings, JPH::EActivation::Activate);
 
@@ -66,9 +65,9 @@ broc::pipelines::PhysicsPipeline broc::pipelines::PhysicsPipeline::Setup(flecs::
       broc::physics::PhysicsWorld::getInstance()->physics_system->OptimizeBroadPhase();
     });
 
-  world.system<broc::types::TestBodyStatic>("Physics Startup Static")
+  world.system<broc::types::StaticBody>("Physics Startup Static")
     .kind(flecs::OnStart)
-    .iter([](flecs::iter &it, types::TestBodyStatic *b) {
+    .iter([](flecs::iter &it, types::StaticBody *b) {
       std::cout << "PHYSICS STARTUP STATIC" << std::endl;
 
       // The main way to interact with the bodies in the physics system is through the body interface. There is a
@@ -80,7 +79,7 @@ broc::pipelines::PhysicsPipeline broc::pipelines::PhysicsPipeline::Setup(flecs::
       for (auto i : it) {
         // Now create a dynamic body to bounce on the floor
         // Note that this uses the shorthand version of creating and adding a body to the world
-        JPH::BodyCreationSettings shape_settings(new JPH::BoxShape(b[i].boxColliderProportions),
+        JPH::BodyCreationSettings shape_settings(new JPH::BoxShape(b[i].box_collider_proportions),
           JPH::Vec3(0.0, -1.0, 0.0), JPH::Quat::sIdentity(), JPH::EMotionType::Static,
           broc::physics::Layers::NON_MOVING);
         b[i].bid = body_interface.CreateAndAddBody(shape_settings, JPH::EActivation::DontActivate);
