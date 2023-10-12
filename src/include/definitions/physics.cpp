@@ -49,21 +49,21 @@ bool broc::physics::ObjectVsBroadPhaseLayerFilterImpl::ShouldCollide(
   }
 }
 
-JPH::ValidateResult broc::physics::MyContactListener::OnContactValidate(
-  const JPH::Body &inBody1, const JPH::Body &inBody2, JPH::RVec3Arg inBaseOffset, const JPH::CollideShapeResult &inCollisionResult) {
+JPH::ValidateResult broc::physics::MyContactListener::OnContactValidate(const JPH::Body &inBody1,
+  const JPH::Body &inBody2, JPH::RVec3Arg inBaseOffset, const JPH::CollideShapeResult &inCollisionResult) {
   std::cout << "Contact validate callback" << std::endl;
 
   // Allows you to ignore a contact before it is created (using layers to not make objects collide is cheaper!)
   return JPH::ValidateResult::AcceptAllContactsForThisBodyPair;
 }
 
-void broc::physics::MyContactListener::OnContactAdded(
-  const JPH::Body &inBody1, const JPH::Body &inBody2, const JPH::ContactManifold &inManifold, JPH::ContactSettings &ioSettings) {
+void broc::physics::MyContactListener::OnContactAdded(const JPH::Body &inBody1, const JPH::Body &inBody2,
+  const JPH::ContactManifold &inManifold, JPH::ContactSettings &ioSettings) {
   std::cout << "A contact was added" << std::endl;
 }
 
-void broc::physics::MyContactListener::OnContactPersisted(
-  const JPH::Body &inBody1, const JPH::Body &inBody2, const JPH::ContactManifold &inManifold, JPH::ContactSettings &ioSettings) {
+void broc::physics::MyContactListener::OnContactPersisted(const JPH::Body &inBody1, const JPH::Body &inBody2,
+  const JPH::ContactManifold &inManifold, JPH::ContactSettings &ioSettings) {
   std::cout << "A contact was persisted" << std::endl;
 }
 
@@ -75,6 +75,7 @@ void broc::physics::MyBodyActivationListener::OnBodyActivated(const JPH::BodyID 
   std::cout << "A body got activated" << std::endl;
 }
 
-void broc::physics::MyBodyActivationListener::OnBodyDeactivated(const JPH::BodyID &inBodyID, JPH::uint64 inBodyUserData) {
+void broc::physics::MyBodyActivationListener::OnBodyDeactivated(
+  const JPH::BodyID &inBodyID, JPH::uint64 inBodyUserData) {
   std::cout << "A body went to sleep" << std::endl;
 }

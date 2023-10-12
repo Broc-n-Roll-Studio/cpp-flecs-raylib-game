@@ -76,7 +76,15 @@ namespace broc::modules
       world.module<InputModule>("InputModule");
 
       m_player_movement = world.system<DynamicBody>("Player Movement Input").with<Player>().each([](DynamicBody &b) {
-        // m.velocity = Vector3Normalize(input::RetrieveMovementVector());
+        auto desired = Vector3Normalize(input::RetrieveMovementVector());
+        auto &body_interface = physics::PhysicsWorld::getInstance()->physics_system->GetBodyInterface();
+
+        if (IsKeyPressed(KEY_SPACE)) {
+          body_interface.AddLinearVelocity(b.bid, {0.0f, 10.0f, 0.0f});
+        }
+
+        body_interface.SetLinearVelocity(
+          b.bid, {desired.x * 30, body_interface.GetLinearVelocity(b.bid).GetY(), desired.z * 30});
       });
     }
     flecs::entity m_player_movement;
@@ -93,6 +101,7 @@ namespace broc::modules
 
       auto render_pipeline = world.get<pipelines::RenderPipeline>();
       auto physics_pipeline = world.get<pipelines::PhysicsPipeline>();
+      auto test = physics::PhysicsWorld::getInstance();
 
       m_draw_dynamic =
         world.system<const DynamicBody, const Drawable>("Draw Entities")
