@@ -87,6 +87,7 @@ namespace broc::modules
           b.bid, {desired.x * 30, body_interface.GetLinearVelocity(b.bid).GetY(), desired.z * 30});
       });
     }
+
     flecs::entity m_player_movement;
   };
 
@@ -100,8 +101,6 @@ namespace broc::modules
       m_drawable = world.component<Drawable>();
 
       auto render_pipeline = world.get<pipelines::RenderPipeline>();
-      auto physics_pipeline = world.get<pipelines::PhysicsPipeline>();
-      auto test = physics::PhysicsWorld::getInstance();
 
       m_draw_dynamic =
         world.system<const DynamicBody, const Drawable>("Draw Entities")

@@ -147,6 +147,7 @@ namespace broc::physics
       // Destroy the factory
       delete JPH::Factory::sInstance;
       JPH::Factory::sInstance = nullptr;
+      delete instancePtr;
     }
 
     void Update(float deltaTime) {

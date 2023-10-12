@@ -3,14 +3,14 @@
 #include "raylib.h"
 
 int main() {
-  flecs::world world;
-
-  broc::config::InitializeWorld(world);
+  broc::world::InitializeTickWorld();
   broc::config::InitializeWindow();
 
   DisableCursor();
+
+  auto world = broc::world::TickWorld::getInstance();
   while (!WindowShouldClose()) {
-    world.progress(GetFrameTime());
+    world->value.progress(GetFrameTime());
   }
 
   CloseWindow();
