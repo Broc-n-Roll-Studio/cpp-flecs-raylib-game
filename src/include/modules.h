@@ -77,7 +77,7 @@ namespace broc::modules
 
       m_player_movement = world.system<DynamicBody>("Player Movement Input").with<Player>().each([](DynamicBody &b) {
         auto desired = Vector3Normalize(input::RetrieveMovementVector());
-        auto &body_interface = physics::PhysicsWorld::getInstance()->physics_system->GetBodyInterface();
+        auto &body_interface = broc::world::PhysicsWorld::getInstance()->physics_system->GetBodyInterface();
 
         if (IsKeyPressed(KEY_SPACE)) {
           body_interface.AddLinearVelocity(b.bid, {0.0f, 10.0f, 0.0f});
@@ -107,7 +107,7 @@ namespace broc::modules
           .kind(render_pipeline->OnDraw)
           .each([](const DynamicBody &b, const Drawable &d) {
             auto body_position =
-              broc::physics::PhysicsWorld::getInstance()->physics_system->GetBodyInterface().GetCenterOfMassPosition(
+              broc::world::PhysicsWorld::getInstance()->physics_system->GetBodyInterface().GetCenterOfMassPosition(
                 b.bid);
 
             DrawCubeV({body_position.GetX(), body_position.GetY(), body_position.GetZ()}, d.proportions, d.color);
@@ -118,7 +118,7 @@ namespace broc::modules
           .kind(render_pipeline->OnDraw)
           .each([](const StaticBody &b, const Drawable &d) {
             auto body_position =
-              broc::physics::PhysicsWorld::getInstance()->physics_system->GetBodyInterface().GetCenterOfMassPosition(
+              broc::world::PhysicsWorld::getInstance()->physics_system->GetBodyInterface().GetCenterOfMassPosition(
                 b.bid);
 
             DrawCubeV({body_position.GetX(), body_position.GetY(), body_position.GetZ()}, d.proportions, d.color);

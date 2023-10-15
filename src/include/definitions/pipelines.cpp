@@ -22,13 +22,13 @@ broc::pipelines::RenderPipeline broc::pipelines::RenderPipeline::Setup(flecs::wo
   return *this;
 }
 
-broc::physics::PhysicsWorld *broc::physics::PhysicsWorld::instancePtr = nullptr;
+broc::world::PhysicsWorld *broc::world::PhysicsWorld::instancePtr = nullptr;
 broc::pipelines::PhysicsPipeline broc::pipelines::PhysicsPipeline::Setup(flecs::world &world) {
   this->OnFixedUpdate = world.entity().add(flecs::Phase).depends_on(flecs::OnUpdate);
   this->m_OnPostFixedUpdate = world.entity().add(flecs::Phase).depends_on(this->OnFixedUpdate);
 
   world.system("Post Fixed Update").kind(this->m_OnPostFixedUpdate).iter([](flecs::iter &it) {
-    broc::physics::PhysicsWorld::getInstance()->Update(GetFrameTime());
+    broc::world::PhysicsWorld::getInstance()->Update(GetFrameTime());
   });
 
   return *this;

@@ -135,6 +135,15 @@ namespace broc::physics
     virtual void OnBodyDeactivated(const JPH::BodyID &inBodyID, JPH::uint64 inBodyUserData) override;
   };
 
+  JPH::BodyID CreateBodyWrapper(JPH::Shape *shape, JPH::Vec3 initialPos = {0, 0, 0},
+    JPH::Quat rotation = JPH::Quat::sIdentity(), JPH::EMotionType motionType = JPH::EMotionType::Static,
+    JPH::ObjectLayer layer = physics::Layers::NON_MOVING,
+    JPH::EActivation eActivation = JPH::EActivation::DontActivate);
+
+} // namespace broc::physics
+
+namespace broc::world
+{
   class PhysicsWorld
   {
    public:
@@ -172,12 +181,12 @@ namespace broc::physics
 
     std::unique_ptr<JPH::PhysicsSystem> physics_system;
 
-    std::unique_ptr<MyBodyActivationListener> body_activation_listener;
-    std::unique_ptr<MyContactListener> contact_listener;
+    std::unique_ptr<physics::MyBodyActivationListener> body_activation_listener;
+    std::unique_ptr<physics::MyContactListener> contact_listener;
 
-    std::unique_ptr<BPLayerInterfaceImpl> broad_phase_layer_interface;
-    std::unique_ptr<ObjectVsBroadPhaseLayerFilterImpl> object_vs_broadphase_layer_filter;
-    std::unique_ptr<ObjectLayerPairFilterImpl> object_vs_object_layer_filter;
+    std::unique_ptr<physics::BPLayerInterfaceImpl> broad_phase_layer_interface;
+    std::unique_ptr<physics::ObjectVsBroadPhaseLayerFilterImpl> object_vs_broadphase_layer_filter;
+    std::unique_ptr<physics::ObjectLayerPairFilterImpl> object_vs_object_layer_filter;
 
    private:
     static PhysicsWorld *instancePtr;
@@ -187,8 +196,8 @@ namespace broc::physics
       JPH::RegisterDefaultAllocator();
 
       // Install callbacks
-      JPH::Trace = TraceImpl;
-      JPH_IF_ENABLE_ASSERTS(JPH::AssertFailed = AssertFailedImpl;)
+      JPH::Trace = physics::TraceImpl;
+      JPH_IF_ENABLE_ASSERTS(JPH::AssertFailed = physics::AssertFailedImpl;)
 
       // Create a factory
       JPH::Factory::sInstance = new JPH::Factory();
@@ -212,17 +221,17 @@ namespace broc::physics
       // Create mapping table from object layer to broadphase layer
       // Note: As this is an interface, PhysicsSystem will take a reference to this so this instance needs to stay
       // alive!
-      this->broad_phase_layer_interface = std::make_unique<BPLayerInterfaceImpl>();
+      this->broad_phase_layer_interface = std::make_unique<physics::BPLayerInterfaceImpl>();
 
       // Create class that filters object vs broadphase layers
       // Note: As this is an interface, PhysicsSystem will take a reference to this so this instance needs to stay
       // alive!
-      this->object_vs_broadphase_layer_filter = std::make_unique<ObjectVsBroadPhaseLayerFilterImpl>();
+      this->object_vs_broadphase_layer_filter = std::make_unique<physics::ObjectVsBroadPhaseLayerFilterImpl>();
 
       // Create class that filters object vs object layers
       // Note: As this is an interface, PhysicsSystem will take a reference to this so this instance needs to stay
       // alive!
-      this->object_vs_object_layer_filter = std::make_unique<ObjectLayerPairFilterImpl>();
+      this->object_vs_object_layer_filter = std::make_unique<physics::ObjectLayerPairFilterImpl>();
 
       // This is the max amount of rigid bodies that you can add to the physics system. If you try to add more you'll
       // get an error. Note: This value is low because this is a simple test. For a real project use something in the
@@ -255,20 +264,14 @@ namespace broc::physics
       // A body activation listener gets notified when bodies activate and go to sleep
       // Note that this is called from a job so whatever you do here needs to be thread safe.
       // Registering one is entirely optional.
-      this->body_activation_listener = std::make_unique<MyBodyActivationListener>();
+      this->body_activation_listener = std::make_unique<physics::MyBodyActivationListener>();
       this->physics_system->SetBodyActivationListener(body_activation_listener.get());
 
       // A contact listener gets notified when bodies (are about to) collide, and when they separate again.
       // Note that this is called from a job so whatever you do here needs to be thread safe.
       // Registering one is entirely optional.
-      this->contact_listener = std::make_unique<MyContactListener>();
+      this->contact_listener = std::make_unique<physics::MyContactListener>();
       this->physics_system->SetContactListener(contact_listener.get());
     }
   };
-
-  JPH::BodyID CreateBodyWrapper(JPH::Shape *shape, JPH::Vec3 initialPos = {0, 0, 0},
-    JPH::Quat rotation = JPH::Quat::sIdentity(), JPH::EMotionType motionType = JPH::EMotionType::Static,
-    JPH::ObjectLayer layer = physics::Layers::NON_MOVING,
-    JPH::EActivation eActivation = JPH::EActivation::DontActivate);
-
-} // namespace broc::physics
+} // namespace broc::world

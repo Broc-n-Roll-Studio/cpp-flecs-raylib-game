@@ -85,6 +85,6 @@ JPH::BodyID broc::physics::CreateBodyWrapper(JPH::Shape *shape, JPH::Vec3 initia
 
   auto body_settings = JPH::BodyCreationSettings(shape, initialPos, rotation, motionType, layer);
 
-  return physics::PhysicsWorld::getInstance()->physics_system->GetBodyInterface().CreateAndAddBody(
+  return broc::world::PhysicsWorld::getInstance()->physics_system->GetBodyInterface().CreateAndAddBody(
     body_settings, eActivation);
 }

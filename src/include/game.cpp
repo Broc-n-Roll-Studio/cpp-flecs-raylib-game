@@ -23,7 +23,7 @@ void broc::world::InitializeTickWorld() {
   tick_world->value.import <modules::PlayerModule>();
   tick_world->value.import <modules::CameraModule>();
 
-  physics::PhysicsWorld::getInstance();
+  broc::world::PhysicsWorld::getInstance();
 
   // Player
   auto player_body = physics::CreateBodyWrapper(new JPH::BoxShape({5, 5, 5}), {0, 10, 0}, JPH::Quat::sIdentity(),
@@ -42,5 +42,5 @@ void broc::world::InitializeTickWorld() {
     d = {.proportions = {128, 1, 128}, .color = LIME};
   });
 
-  physics::PhysicsWorld::getInstance()->physics_system->OptimizeBroadPhase();
+  broc::world::PhysicsWorld::getInstance()->physics_system->OptimizeBroadPhase();
 }
