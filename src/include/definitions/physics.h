@@ -6,7 +6,15 @@
 #include "Jolt/Core/Factory.h"
 #include "Jolt/Core/JobSystemThreadPool.h"
 #include "Jolt/Core/TempAllocator.h"
+#include "Jolt/Math/Quat.h"
+#include "Jolt/Math/Vec3.h"
 #include "Jolt/Physics/Body/BodyActivationListener.h"
+#include "Jolt/Physics/Body/BodyCreationSettings.h"
+#include "Jolt/Physics/Body/BodyID.h"
+#include "Jolt/Physics/Body/BodyInterface.h"
+#include "Jolt/Physics/Collision/ObjectLayer.h"
+#include "Jolt/Physics/Collision/Shape/Shape.h"
+#include "Jolt/Physics/EActivation.h"
 #include "Jolt/Physics/PhysicsSettings.h"
 #include "Jolt/Physics/PhysicsSystem.h"
 #include "Jolt/RegisterTypes.h"
@@ -19,6 +27,17 @@
 
 namespace broc::physics
 {
+  // Layer that objects can be in, determines which other objects it can collide with
+  // Typically you at least want to have 1 layer for moving bodies and 1 layer for static bodies, but you can have more
+  // layers if you want. E.g. you could have a layer for high detail collision (which is not used by the physics
+  // simulation but only if you do collision testing).
+  namespace Layers
+  {
+    static constexpr JPH::ObjectLayer NON_MOVING = 0;
+    static constexpr JPH::ObjectLayer MOVING = 1;
+    static constexpr JPH::ObjectLayer NUM_LAYERS = 2;
+  }; // namespace Layers
+
   // Callback for traces, connect this to your own trace function if you have one
   static void TraceImpl(const char *inFMT, ...) {
     // Format the message
@@ -42,17 +61,6 @@ namespace broc::physics
     return true;
   };
 #endif
-
-  // Layer that objects can be in, determines which other objects it can collide with
-  // Typically you at least want to have 1 layer for moving bodies and 1 layer for static bodies, but you can have more
-  // layers if you want. E.g. you could have a layer for high detail collision (which is not used by the physics
-  // simulation but only if you do collision testing).
-  namespace Layers
-  {
-    static constexpr JPH::ObjectLayer NON_MOVING = 0;
-    static constexpr JPH::ObjectLayer MOVING = 1;
-    static constexpr JPH::ObjectLayer NUM_LAYERS = 2;
-  }; // namespace Layers
 
   /// Class that determines if two object layers can collide
   class ObjectLayerPairFilterImpl : public JPH::ObjectLayerPairFilter
@@ -257,4 +265,10 @@ namespace broc::physics
       this->physics_system->SetContactListener(contact_listener.get());
     }
   };
+
+  JPH::BodyID CreateBodyWrapper(JPH::Shape *shape, JPH::Vec3 initialPos = {0, 0, 0},
+    JPH::Quat rotation = JPH::Quat::sIdentity(), JPH::EMotionType motionType = JPH::EMotionType::Static,
+    JPH::ObjectLayer layer = physics::Layers::NON_MOVING,
+    JPH::EActivation eActivation = JPH::EActivation::DontActivate);
+
 } // namespace broc::physics

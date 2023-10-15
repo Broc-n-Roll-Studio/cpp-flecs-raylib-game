@@ -4,7 +4,6 @@
 ///
 
 #include "Jolt/Physics/Body/BodyID.h"
-#include "Jolt/Physics/Collision/Shape/Shape.h"
 #include "raylib.h"
 
 namespace broc::types
@@ -23,13 +22,11 @@ namespace broc::types
   struct DynamicBody
   {
     JPH::BodyID bid;
-    JPH::Vec3 box_collider_proportions;
   };
 
   struct StaticBody
   {
     JPH::BodyID bid;
-    JPH::Vec3 box_collider_proportions;
   };
 
   struct Player

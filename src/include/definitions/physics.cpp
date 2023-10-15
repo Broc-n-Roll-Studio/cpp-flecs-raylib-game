@@ -79,3 +79,12 @@ void broc::physics::MyBodyActivationListener::OnBodyDeactivated(
   const JPH::BodyID &inBodyID, JPH::uint64 inBodyUserData) {
   std::cout << "A body went to sleep" << std::endl;
 }
+
+JPH::BodyID broc::physics::CreateBodyWrapper(JPH::Shape *shape, JPH::Vec3 initialPos, JPH::Quat rotation,
+  JPH::EMotionType motionType, JPH::ObjectLayer layer, JPH::EActivation eActivation) {
+
+  auto body_settings = JPH::BodyCreationSettings(shape, initialPos, rotation, motionType, layer);
+
+  return physics::PhysicsWorld::getInstance()->physics_system->GetBodyInterface().CreateAndAddBody(
+    body_settings, eActivation);
+}
